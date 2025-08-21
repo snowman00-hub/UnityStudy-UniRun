@@ -27,11 +27,6 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            gameManager.AddScore(10);
-        }
-
         if (isDead)
             return;
 
@@ -40,6 +35,11 @@ public class Player : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
             rb.AddForce(new Vector2(0f, JumpForce), ForceMode2D.Impulse);
             ++jumpCount;
+        }
+
+        if (Input.GetMouseButtonUp(0) && rb.linearVelocity.y > 0)
+        {
+            rb.linearVelocity *= 0.5f;
         }
 
         animator.SetBool("Grounded", isGrounded);
