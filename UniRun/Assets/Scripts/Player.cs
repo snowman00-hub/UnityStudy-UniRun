@@ -86,5 +86,7 @@ public class Player : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
 
         gameManager.OnPlayerDead();
+
+        audioSource.PlayOneShot(dieAudioClip);
     }
 }
