@@ -5,9 +5,12 @@ public class Player : MonoBehaviour
     public float JumpForce = 100f;
     public int JumpCountMax = 2;
 
+    public AudioClip dieAudioClip;
+
     private int jumpCount = 0;
     private Animator animator;
     private Rigidbody2D rb;
+    private AudioSource audioSource;
 
     private bool isGrounded = true;
     private bool isDead = false;
@@ -18,6 +21,7 @@ public class Player : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -35,6 +39,8 @@ public class Player : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
             rb.AddForce(new Vector2(0f, JumpForce), ForceMode2D.Impulse);
             ++jumpCount;
+
+            audioSource.Play();
         }
 
         if (Input.GetMouseButtonUp(0) && rb.linearVelocity.y > 0)
@@ -55,7 +61,8 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("Platform"))
+        if (collision.collider.CompareTag("Platform") &&
+            collision.contacts[0].normal.y > 0.7f)
         {
             jumpCount = 0;
             isGrounded = true;
